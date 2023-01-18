@@ -8,6 +8,11 @@
 div{
     display: block;
 }
+.button{
+    border: none;
+    opacity: 0;
+    cursor: pointer;
+}
 .board-container{
     display: flex;
     justify-content: center;
@@ -20,6 +25,8 @@ div{
     grid-gap: 5px;
     padding: 10px;
     box-sizing: border-box;
+    width: 300px;
+    height: 360px;
 }
 .row-module{
     display: grid;
