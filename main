@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Wordle Predict</title>
+    </head>
+    <body>
+        <div class="top-banner">
+
+        </div>
+        <div>
+            <div class="wordle-display">
+
+            </div>
+            <div class="possible-answer-list">
+
+            </div>
+        </div>
+
+    </body> 
+</html>
