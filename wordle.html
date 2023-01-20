@@ -4,6 +4,25 @@
         <meta charset="utf-8">
         <title>Wordle Predict</title>
         <link rel="stylesheet" href="wordle.css">
+
+        <script>
+            function changeDataState(id){
+                var button = document.getElementById(id);
+                var buttonState = button.getAttribute("data-state");
+                if (buttonState == "tbd"){
+                    button.setAttribute("data-state","absent")
+                }
+                if (buttonState == "absent"){
+                    button.setAttribute("data-state","present")
+                }
+                if (buttonState == "present"){
+                    button.setAttribute("data-state","correct")
+                }
+                if (buttonState=="correct"){
+                    button.setAttribute("data-state","absent")
+                }
+            }
+        </script>
     </head>
     <body>
         <div id="global-content-wrapper">
@@ -15,7 +34,7 @@
                     <div class="board-container">
                         <div class="board-module">
                             <div class="row-module" id="row-1">
-                                <button class="tile-module" id="row-1-tile-1" data-state="present">s</button>
+                                <button type = "button" class="tile-module" id="row-1-tile-1" data-state="present" onclick ="changeDataState(this);">s</button>
                                 <button class="tile-module" id="row-1-tile-2" data-state="absent">l</button>
                                 <button class="tile-module" id="row-1-tile-3" data-state="tbd">a</button>
                                 <button class="tile-module" id="row-1-tile-4" data-state="correct">t</button>
@@ -59,7 +78,7 @@
                         </div>
                         <div class = "button-bar">
                             <div class="previous-button-container">
-                                <button>previous</button>
+                                <button id = "test" state = "s1" onclick="">previous</button>
                             </div>
                             <div class="button-spacer"></div>
                             <div class="next-button-container">
