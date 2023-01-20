@@ -32,20 +32,20 @@ function compareKeys(guess,target){
     return [correctKeys,incorrectKeyss]
 }
 
-function generateGuessKeys(guess,green,orange,grey){
+function generateGuessKeys(guess,correct,present,absent){
     correctKeys = new Set()
     wrongKeys = new Set()
 
     for (i = 0; i<5; i++){
-        if (green[i] == true){
+        if (correct[i] == true){
             correctKeys.add(guess[i])
             correctKeys.add([guess[i],i])
         }
-        if (orange[i]  == true){
+        if (present[i]  == true){
             correctKeys.add(guess[i])
             wrongKeys.add([guess[i],i])
         }
-        if (grey[i]==true){
+        if (absent[i]==true){
             wrongKeys.add(guess[i])
             wrongKeys.add([guess[i],i])
         }
