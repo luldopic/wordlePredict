@@ -33,8 +33,14 @@ div{
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 5px
 }
+
 .tile-module[data-state=empty]{
     border: 2px solid #d3d6da
+}
+.tile-module[data-state=tbd]{
+    background-color: #ffffff;
+    border: 2px solid #878a8c;
+    color: #000000
 }
 .tile-module[data-state=absent]{
     background-color: #787c7e;
@@ -45,11 +51,16 @@ div{
 .tile-module[data-state=present]{
     background-color: #c9b458;
 }
+.tile-module::before{
+    content: "";
+    display: inline-block;
+    padding-bottom: 100%;
+}
 .tile-module{
     width: 100%;
     display: inline-flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
     font-size: 2rem;
     line-height: 1;
     font-weight: bold;
