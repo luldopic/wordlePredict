@@ -6,8 +6,7 @@
         <link rel="stylesheet" href="wordle.css">
 
         <script>
-            function changeDataState(id){
-                var button = document.getElementById(id);
+            function changeDataState(button){
                 var buttonState = button.getAttribute("data-state");
                 if (buttonState == "tbd"){
                     button.setAttribute("data-state","absent")
@@ -20,6 +19,9 @@
                 }
                 if (buttonState=="correct"){
                     button.setAttribute("data-state","absent")
+                }
+                if (buttonState=="empty"){
+                    // do nothing
                 }
             }
         </script>
@@ -35,31 +37,31 @@
                         <div class="board-module">
                             <div class="row-module" id="row-1">
                                 <button type = "button" class="tile-module" id="row-1-tile-1" data-state="present" onclick ="changeDataState(this);">s</button>
-                                <button class="tile-module" id="row-1-tile-2" data-state="absent">l</button>
-                                <button class="tile-module" id="row-1-tile-3" data-state="tbd">a</button>
-                                <button class="tile-module" id="row-1-tile-4" data-state="correct">t</button>
-                                <button class="tile-module" id="row-1-tile-5" data-state="correct">e</button>
+                                <button class="tile-module" id="row-1-tile-2" data-state="absent" onclick ="changeDataState(this);">l</button>
+                                <button class="tile-module" id="row-1-tile-3" data-state="tbd" onclick ="changeDataState(this);">a</button>
+                                <button class="tile-module" id="row-1-tile-4" data-state="correct" onclick ="changeDataState(this);">t</button>
+                                <button class="tile-module" id="row-1-tile-5" data-state="correct" onclick ="changeDataState(this);">e</button>
                             </div>
                             <div class="row-module" id="row-2">
-                                <button class="tile-module" id="row-2-tile-1" data-state="empty"></button>
-                                <button class="tile-module" id="row-2-tile-2" data-state="empty"></button>
-                                <button class="tile-module" id="row-2-tile-3" data-state="empty"></button>
-                                <button class="tile-module" id="row-2-tile-4" data-state="empty"></button>
-                                <button class="tile-module" id="row-2-tile-5" data-state="empty"></button>
+                                <button class="tile-module" id="row-2-tile-1" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-2-tile-2" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-2-tile-3" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-2-tile-4" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-2-tile-5" data-state="empty" onclick ="changeDataState(this);"></button>
                             </div>
                             <div class="row-module" id="row-3">
-                                <button class="tile-module" id="row-3-tile-1" data-state="empty"></button>
-                                <button class="tile-module" id="row-3-tile-2" data-state="empty"></button>
-                                <button class="tile-module" id="row-3-tile-3" data-state="empty"></button>
-                                <button class="tile-module" id="row-3-tile-4" data-state="empty"></button>
-                                <button class="tile-module" id="row-3-tile-5" data-state="empty"></button>
+                                <button class="tile-module" id="row-3-tile-1" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-3-tile-2" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-3-tile-3" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-3-tile-4" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-3-tile-5" data-state="empty" onclick ="changeDataState(this);"></button>
                             </div>
                             <div class="row-module" id="row-4">
-                                <button class="tile-module" id="row-4-tile-1" data-state="empty"></button>
-                                <button class="tile-module" id="row-4-tile-2" data-state="empty"></button>
-                                <button class="tile-module" id="row-4-tile-3" data-state="empty"></button>
-                                <button class="tile-module" id="row-4-tile-4" data-state="empty"></button>
-                                <button class="tile-module" id="row-4-tile-5" data-state="empty"></button>
+                                <button class="tile-module" id="row-4-tile-1" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-4-tile-2" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-4-tile-3" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-4-tile-4" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-4-tile-5" data-state="empty" onclick ="changeDataState(this);"></button>
                             </div>
                             <div class="row-module" id="row-5">
                                 <button class="tile-module" id="row-5-tile-1" data-state="empty"></button>
