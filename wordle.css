@@ -24,6 +24,10 @@ div{
     color: #ffffff;
     border-color: #04AA6D;
 }
+.answer-container{
+    height: 300px;
+    overflow-y: scroll;
+}
 .board-container{
     display: flex;
     flex-direction: column;

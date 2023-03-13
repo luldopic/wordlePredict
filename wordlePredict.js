@@ -2333,38 +2333,38 @@ function letterSet(){
         }
     }
     return letterDict
-}
+};
 
 function letterPos(){
-    let letterpos = new Object()
+    let letterposition = new Object()
+    let letterkeys = []
     for (let letter of alphabet){
         for (const position of Array(5).keys()){
-            letterPos[[letter,position]] = new Set()
+            letterposition[[letter,position].toString()] = new Set()
+            letterkeys.push([letter,position].toString())
         }
     }
-    console.log(letterPos)
     for (let word of wordbank){
-        for (let letterkey of Object.keys(letterPos)){
-            if (word[letterkey[1]] == letterkey[0]){
-                letterPos[letterkey].add(word)
+        for (let letterkey of letterkeys){
+            if (word[parseInt(letterkey[2])] == letterkey[0]){
+                letterposition[letterkey].add(word)
             }
         }
     }
-    return letterPos
+    return letterposition
 }
 
 const letterdict = letterSet()
 const letterposition = letterPos()
-console.log(letterposition)
 
 possible = structuredClone(wordbank)
-let list = document.getElementById("possible-answers")
-
+let list = document.getElementById("possible-answer-list")
 possible.forEach((word) => {
     let li = document.createElement("li")
+    li.className = "possible-answer"
     li.innerText = word
     list.appendChild(li)
-});
+})
 
 function wordKey(word){
     var keys = new Set()
