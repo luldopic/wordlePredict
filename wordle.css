@@ -8,13 +8,20 @@
 div{
     display: block;
 }
-.button{
-    border: none;
-    opacity: 0;
-    cursor: pointer;
+.nextprev{
+    font-size: 18px;
+    font-family: 'Source Sans Pro', sans-serif;
+    padding-left: 19px;
+    padding-right: 19px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    background-color: #04AA6D;
+    color: #ffffff;
+    border-color: #04AA6D;
 }
 .board-container{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-grow: 1;
@@ -27,6 +34,13 @@ div{
     box-sizing: border-box;
     width: 300px;
     height: 360px;
+}
+.button-bar{
+    display: flex;
+    width: 300px;
+    flex-grow: 1;
+    flex-direction: row;
+    justify-content: space-between;
 }
 .row-module{
     display: grid;
