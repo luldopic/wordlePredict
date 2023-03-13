@@ -1,3 +1,5 @@
+import {wordbank, letterdict, letterposition} from "./wordlist.js"
+
 function wordKey(word){
     var keys = new Set()
     for (let i = 0; i < 5; i++){
