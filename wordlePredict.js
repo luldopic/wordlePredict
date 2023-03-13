@@ -2374,7 +2374,14 @@ function wordKey(word){
     }
     return keys
 }
+test1 = "slate"
+test2 = "grace"
 
+wordkey1 = wordKey(test1)
+wordkey2= wordKey(test2)
+
+console.log(wordkey1)
+console.log(wordkey2)
 function union(setA, setB){
     const union = new Set(setA)
 
@@ -2384,12 +2391,23 @@ function union(setA, setB){
 
     return union
 }
-
+console.log("union")
+console.log(union(wordkey1,wordkey2))
 function intersection(setA, setB){
     let a = new Set(setA)
     let b = new Set(setB)
     let intersect = new Set([...a].filter(i => b.has(i)));
     return intersect
+}
+console.log("intersect ")
+console.log(intersection(wordkey1,wordkey2))
+function JaccardIndex(guess, target){
+    guessKey = wordKey(guess)
+    targetKey = wordKey(target)
+    relatedKey = intersection(guessKey,targetKey)
+    unionKey = union(guessKey,targetKey)
+    Jaccard = 1-(relatedKey.size/unionKey.size)
+    return Jaccard
 }
 
 function compareKeys(guess,target){
