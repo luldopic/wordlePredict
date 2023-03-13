@@ -2320,7 +2320,7 @@ const wordbank = new Set(
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
-function letterSet(wordbank){
+function letterSet(){
     let letterDict = new Object()
     for (let letter of alphabet){
         letterDict[letter] = new Set()
@@ -2335,3 +2335,24 @@ function letterSet(wordbank){
     }
     return letterDict
 }
+
+function letterPos(){
+    let letterpos = new Object()
+    for (let letter of alphabet){
+        for (const position of Array(5).keys()){
+            letterPos[[letter,position]] = new Set()
+        }
+    }
+
+    for (let word of wordbank){
+        for (let letterkey of Object.keys(letterPos)){
+            if (word[letterkey[1]] == letterkey[0]){
+                letterPos[letterkey].add(word)
+            }
+        }
+    }
+    return letterPos
+}
+
+const letterdict = letterSet()
+const letterposition = letterPos()
