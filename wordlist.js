@@ -2321,5 +2321,17 @@ const wordbank = new Set(
 const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
 function letterSet(wordbank){
+    let letterDict = new Object()
+    for (let letter of alphabet){
+        letterDict[letter] = new Set()
+    }
 
+    for (let word of wordbank){
+        for (let letter of Object.keys(letterDict)){
+            if (word.includes(letter)){
+                letterDict[letter].add(word)
+            }
+        }
+    }
+    return letterDict
 }
