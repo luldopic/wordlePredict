@@ -1,5 +1,14 @@
 import {wordbank, letterdict, letterposition} from "./wordlist.js"
 
+possible = structuredClone(wordbank)
+let list = document.getElementById("possible-answers")
+
+possible.forEach((word) => {
+    let li = document.createElement("li")
+    li.innerText = word
+    list.appendChild(li)
+});
+
 function wordKey(word){
     var keys = new Set()
     for (let i = 0; i < 5; i++){
