@@ -2356,3 +2356,4 @@ function letterPos(){
 
 const letterdict = letterSet()
 const letterposition = letterPos()
+export {wordbank, letterdict, letterposition}
