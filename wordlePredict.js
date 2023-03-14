@@ -2524,7 +2524,7 @@ function popGuess(){
 
 function pushGuess(){
     let answerKey = getAnswerKey(activerow)
-    console.log(answerKey)
+    //console.log(answerKey)
     if (answerKey.every(v => v=="correct")){
         AnswerFound(activerow)
         return
