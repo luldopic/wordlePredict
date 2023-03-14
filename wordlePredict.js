@@ -2359,7 +2359,6 @@ function letterPos(){
 const letterdict = letterSet()
 const letterposition = letterPos()
 // #endregion
-possible = structuredClone(wordbank)
 
 function wordKey(word){
     var keys = new Set()
@@ -2422,7 +2421,7 @@ function getSortedPossible(possible){
         answerscores.push([word,score])
     }
     sortedAnswers = answerscores.sort(sortAnswersByScore).reverse().map(function(value, index) { return value[0]})
-    console.log(sortedAnswers)
+    //console.log(sortedAnswers)
     return sortedAnswers
 }
 //#endregion
@@ -2448,10 +2447,39 @@ function updatecurrentguess(rowid, topguess){
     }
 }
 
-var currentrow = "row-1"
+possible = structuredClone(wordbank)
+var activerow = "row-1"
 var guessList = []
-function getAnswerKey(currentrow){
+function runOnStart(guessList){
+    //Get opening list
+    starterList = getSortedPossible(possible)
+    updateAnswerList(starterList)
+    updatecurrentguess(activerow, starterList[0])
+    guessList.push(guessList)
+    return guessList
+}
+runOnStart(guessList)
 
+
+function getAnswerKey(rowid){
+    let rowchildren = document.getElementById(rowid).children
+    let answerKey = []
+    for (let i=0; i< rowchildren.length; i++){
+        answerKey.push(rowchildren[i].getAttribute("data-state"))
+    }
+    return answerKey
+}
+
+function invalidFlash(tileid){
+    
+}
+
+function pushGuess(){
+    
+    answerKey = getAnswerKey(activerow)
+    if (answerKey.has("tbd")){
+        invalidFLASH
+    }
 }
 
 function generateGuessKey(guess, answerKey){
@@ -2493,5 +2521,3 @@ function updatepossible(guess,answerKey,possible){
     [correctKeys,wrongKeys] = generateGuessKey(guess,answerKey)
 
 }
-//answerlist = getSortedPossible(possible)
-//updateAnswerList(answerlist)
