@@ -1,3 +1,5 @@
+// #region Word Set
+
 const wordbank = new Set(
     [
         "aback",
@@ -2356,32 +2358,19 @@ function letterPos(){
 
 const letterdict = letterSet()
 const letterposition = letterPos()
-
+// #endregion
 possible = structuredClone(wordbank)
-let list = document.getElementById("possible-answer-list")
-possible.forEach((word) => {
-    let li = document.createElement("li")
-    li.className = "possible-answer"
-    li.innerText = word
-    list.appendChild(li)
-})
 
 function wordKey(word){
     var keys = new Set()
     for (let i = 0; i < 5; i++){
         keys.add(word[i])
-        keys.add([word[i],i])
+        keys.add([word[i],i].toString())
     }
     return keys
 }
-test1 = "slate"
-test2 = "grace"
 
-wordkey1 = wordKey(test1)
-wordkey2= wordKey(test2)
-
-console.log(wordkey1)
-console.log(wordkey2)
+//#region Set evaluation
 function union(setA, setB){
     const union = new Set(setA)
 
@@ -2391,60 +2380,118 @@ function union(setA, setB){
 
     return union
 }
-console.log("union")
-console.log(union(wordkey1,wordkey2))
 function intersection(setA, setB){
     let a = new Set(setA)
     let b = new Set(setB)
     let intersect = new Set([...a].filter(i => b.has(i)));
     return intersect
 }
-console.log("intersect ")
-console.log(intersection(wordkey1,wordkey2))
+//#endregion
+
+//#region Word Similarity Scoring
 function JaccardIndex(guess, target){
     guessKey = wordKey(guess)
     targetKey = wordKey(target)
     relatedKey = intersection(guessKey,targetKey)
     unionKey = union(guessKey,targetKey)
-    Jaccard = 1-(relatedKey.size/unionKey.size)
+    Jaccard = (relatedKey.size/unionKey.size)
     return Jaccard
 }
-
-function compareKeys(guess,target){
-    guessKey = wordKey(guess)
-    targetKey = wordKey(target)
-    correctKeys = intersection(guessKey,targetKey)
-    incorrectKeys = guessKey - targetKey
-    return [correctKeys,incorrectKeyss]
-}
-
-function generateGuessKeys(guess,correct,present,absent){
-    correctKeys = new Set()
-    wrongKeys = new Set()
-
-    for (i = 0; i<5; i++){
-        if (correct[i] == true){
-            correctKeys.add(guess[i])
-            correctKeys.add([guess[i],i])
-        }
-        if (present[i]  == true){
-            correctKeys.add(guess[i])
-            wrongKeys.add([guess[i],i])
-        }
-        if (absent[i]==true){
-            wrongKeys.add(guess[i])
-            wrongKeys.add([guess[i],i])
-        }
+function SimilarityScore(guess,possible){
+    score = 0
+    for (let word of possible){
+        score += JaccardIndex(guess,word)
     }
-    
-    return [correctKeys,wrongKeys]
+    return score
 }
 
-function possibleAnswer(keys,possible){
-    AllGuess = new Set()
-    possibleAnswer = new Set()
-    listKey = []
-    for (key in keys){
-        //test out keys in possible
+function sortAnswersByScore(a,b){
+    if (a[1] === b[1]) {
+        return 0;
+    }
+    else {
+        return (a[1] < b[1]) ? -1 : 1;
     }
 }
+
+function getSortedPossible(possible){
+    answerscores = []
+    for (let word of wordbank){
+        score = SimilarityScore(word,possible)
+        //console.log(word + ":" + score)
+        answerscores.push([word,score])
+    }
+    sortedAnswers = answerscores.sort(sortAnswersByScore).reverse().map(function(value, index) { return value[0]})
+    console.log(sortedAnswers)
+    return sortedAnswers
+}
+//#endregion
+
+function updateAnswerList(answerlist){
+    let list = document.getElementById("possible-answer-list")
+    while (list.firstChild){
+        list.removeChild(list.lastChild)
+    }
+    answerlist.forEach((word) => {
+        let li = document.createElement("li")
+        li.className = "possible-answer"
+        li.innerText = word
+        list.appendChild(li)
+    })
+}
+
+function updatecurrentguess(rowid, topguess){
+    let currentrow = document.getElementById(rowid).children
+    for (let i = 0; i < currentrow.length; i++){
+        currentrow[i].innerHTML = topguess[i]
+        currentrow[i].setAttribute("data-state","tbd")
+    }
+}
+
+var currentrow = "row-1"
+var guessList = []
+function getAnswerKey(currentrow){
+
+}
+
+function generateGuessKey(guess, answerKey){
+    let correctKeys = Set()
+    let wrongKeys = Set()
+    for (const i of Array(5).keys()){
+        if (answerKey[i] == "correct"){
+            correctKeys.add(guess[i])
+            correctKeys.add([guess[i],i].toString())
+        }
+        else if (answerKey[i] == "present"){
+            correctKeys.add(guess[i])
+            wrongKeys.add([guess[i],i].toString())
+        }
+        else if (answerKey[i] == "absent"){
+            correctKeys.add(guess[i])
+            wrongKeys.add([guess[i],i].toString())
+        }
+    }
+    return [correctKeys, wrongKeys]
+}
+
+function possibleAnswer(correctKey, possible){
+    let GuessDict = Object.assign({},letterdict,letterposition)
+    var listKey = []
+    for (key in GuessDict){
+        if (correctKey.has(key)) {
+            listKey.push(GuessDict[key])
+        }
+    }
+    possibleAnswer = new Set(listKey)
+    console.log(possibleAnswer)
+    possible = intersection(possible,possibleAnswer)
+    console.log(possible)
+    return possible
+}
+
+function updatepossible(guess,answerKey,possible){
+    [correctKeys,wrongKeys] = generateGuessKey(guess,answerKey)
+
+}
+//answerlist = getSortedPossible(possible)
+//updateAnswerList(answerlist)
