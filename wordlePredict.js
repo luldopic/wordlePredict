@@ -2534,7 +2534,7 @@ function pushGuess(){
         alert("Please click on the letters to change color corresponding to whether they are present and in the right position (green), present but in the wrong position (orange), or not present (grey)")
         alert("Colors cycle from grey to orange to green")
     }
-    else{        
+    else {        
         let guessKey = generateGuessKey(guessList[guessList.length - 1],answerKey)
         //console.log(guessKey)
         possible = GetPossibleAnswer(guessKey[0],possible)
