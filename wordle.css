@@ -75,6 +75,23 @@ div{
 .tile-module[data-state=present]{
     background-color: #c9b458;
 }
+@keyframes invalid {
+    0% {
+        background-color: #ffffff;
+        border: 4px solid #878a8c;
+        color: #000000
+    }
+    50% {
+        background-color: #ff0000;
+        border: 4px solid #878a8c;
+        color: #000000
+    }
+}
+.tile-module[data-state=invalid]{
+    animation-name: invalid;
+    animation-duration: 1s;
+    animation-iteration-count: 3;
+}
 .tile-module::before{
     content: "";
     display: inline-block;

@@ -2413,19 +2413,44 @@ function sortAnswersByScore(a,b){
         return (a[1] < b[1]) ? -1 : 1;
     }
 }
+//#endregion
 
-function getSortedPossible(possible){
-    answerscores = []
+function getSortedPossible(possible, activerow, DisplayList, DisplayGuess){
+    /*
+    var ScoringCalc = new Promise(function(resolve, reject){
+        let answerscores = []
+        for (let word of wordbank){
+            score = SimilarityScore(word,possible)
+            //console.log(word + ":" + score)
+            answerscores.push([word,score])
+        }
+        let sortedAnswers = answerscores.sort(sortAnswersByScore).reverse().map(function(value, index) { return value[0]})
+        //console.log(sortedAnswers)
+        resolve(sortedAnswers)
+        
+    })
+    ScoringCalc.then(
+        function(sortedAnswers){
+            DisplayList(sortedAnswers)
+            DisplayGuess(activerow, sortedAnswers[0])
+        }
+    )
+    */
+   
+    let answerscores = []
     for (let word of wordbank){
         score = SimilarityScore(word,possible)
         //console.log(word + ":" + score)
         answerscores.push([word,score])
     }
-    sortedAnswers = answerscores.sort(sortAnswersByScore).reverse().map(function(value, index) { return value[0]})
+    let sortedAnswers = answerscores.sort(sortAnswersByScore).reverse().map(function(value, index) { return value[0]})
+    let topguess = sortedAnswers[0]
     //console.log(sortedAnswers)
+    DisplayList(sortedAnswers)
+    DisplayGuess(activerow, topguess)
     return sortedAnswers
+    
 }
-//#endregion
 
 function updateAnswerList(answerlist){
     let list = document.getElementById("possible-answer-list")
@@ -2452,15 +2477,15 @@ possible = structuredClone(wordbank)
 possibleSorted = structuredClone(sortedwordbank)
 var activerow = "row-1"
 var guessList = []
-function runOnStart(guessList){
+function runOnStart(){
     //Get opening list
+    //sortedAnswers = getSortedPossible(possible,activerow,updateAnswerList,updatecurrentguess)
     updateAnswerList(possibleSorted)
     updatecurrentguess(activerow, possibleSorted[0])
-    guessList.push(guessList)
-    return guessList
+    guessList.push(possibleSorted[0])
+    
 }
 runOnStart(guessList)
-
 
 function getAnswerKey(rowid){
     let rowchildren = document.getElementById(rowid).children
@@ -2471,21 +2496,28 @@ function getAnswerKey(rowid){
     return answerKey
 }
 
-function invalidFlash(tileid){
-
-}
-
 function pushGuess(){
-    
-    answerKey = getAnswerKey(activerow)
-    if (answerKey.has("tbd")){
-        invalidFLASH
+    let answerKey = getAnswerKey(activerow)
+    if (answerKey.includes("tbd")){
+        alert("Not all letters have an assigned color")
+        alert("Please click on the letters to change color corresponding to whether they are present and in the right position (green), present but in the wrong position (orange), or not present (grey)")
+        alert("Colors cycle from grey to orange to green")
+    }
+    else{
+        let row = document.getElementById(activerow)
+        row = row.nextElementSibling
+        activerow = row.id
+        let guessKey = generateGuessKey(guessList[guessList.length - 1],answerKey)
+        console.log(guessKey)
+        possible = GetPossibleAnswer(guessKey[0],possible)
+        console.log(possible)
     }
 }
 
 function generateGuessKey(guess, answerKey){
-    let correctKeys = Set()
-    let wrongKeys = Set()
+    let correctKeys = new Set()
+    let wrongKeys = new Set()
+    console.log(answerKey)
     for (const i of Array(5).keys()){
         if (answerKey[i] == "correct"){
             correctKeys.add(guess[i])
@@ -2496,14 +2528,14 @@ function generateGuessKey(guess, answerKey){
             wrongKeys.add([guess[i],i].toString())
         }
         else if (answerKey[i] == "absent"){
-            correctKeys.add(guess[i])
+            wrongKeys.add(guess[i])
             wrongKeys.add([guess[i],i].toString())
         }
     }
     return [correctKeys, wrongKeys]
 }
 
-function possibleAnswer(correctKey, possible){
+function GetPossibleAnswer(correctKey, possible){
     let GuessDict = Object.assign({},letterdict,letterposition)
     var listKey = []
     for (key in GuessDict){
@@ -2511,7 +2543,10 @@ function possibleAnswer(correctKey, possible){
             listKey.push(GuessDict[key])
         }
     }
-    possibleAnswer = new Set(listKey)
+    let possibleAnswer = new Set(listKey)
+    console.log(possible)
+    console.log(possibleAnswer)
+    possibleAnswer = new Set([possibleAnswer])
     console.log(possibleAnswer)
     possible = intersection(possible,possibleAnswer)
     console.log(possible)
