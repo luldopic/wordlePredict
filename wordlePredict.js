@@ -2530,6 +2530,10 @@ function pushGuess(){
         alert("Colors cycle from grey to orange to green")
     }
     else{
+        if (answerKey.every(has("correct"))){
+            AnswerFound(activerow)
+            return
+        }
         let guessKey = generateGuessKey(guessList[guessList.length - 1],answerKey)
         //console.log(guessKey)
         possible = GetPossibleAnswer(guessKey[0],possible)
