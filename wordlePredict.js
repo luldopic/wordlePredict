@@ -2479,6 +2479,7 @@ let possible = structuredClone(wordbank)
 let possibleSorted = structuredClone(sortedwordbank)
 var activerow = "row-1"
 var guessList = []
+var possibleStack = [structuredClone(possible)]
 function runOnStart(){
     //Get opening list
     //sortedAnswers = getSortedPossible(possible,activerow,updateAnswerList,updatecurrentguess)
@@ -2507,6 +2508,22 @@ function AnswerFound(rowid){
     }
     alert("You have found the word you are looking for")
 }
+
+function popGuess(){
+    guessList.pop()
+    possibleStack.pop()
+    possible = possibleStack[possibleStack.length - 1]
+    let currentrow = document.getElementById(activerow).children
+    for (let i = 0; i < currentrow.length; i++){
+        currentrow[i].innerHTML = ""
+        currentrow[i].setAttribute("data-state","empty")
+    }
+    let row = document.getElementById(activerow)
+    row = row.previousElementSibling
+    activerow = row.id
+    if (activerow == "row-1"){document.getElementById("previous").disabled = true}
+}
+
 function pushGuess(){
     let answerKey = getAnswerKey(activerow)
     //console.log(answerKey)
@@ -2527,6 +2544,7 @@ function pushGuess(){
         activerow = row.id
         sortedAnswers = getSortedPossible(possible,activerow,updateAnswerList,updatecurrentguess)
         guessList.push(sortedAnswers[0])
+        possibleStack.push(structuredClone(possible))
         let prevbutton = document.getElementById("previous")
         prevbutton.disabled = false
         if (sortedAnswers.length == 1){AnswerFound(activerow)}
