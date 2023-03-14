@@ -2488,6 +2488,7 @@ function runOnStart(){
     updatecurrentguess(activerow, possibleSorted[0])
     guessList.push(possibleSorted[0])
     
+    
 }
 runOnStart(guessList)
 
@@ -2524,16 +2525,17 @@ function popGuess(){
 function pushGuess(){
     let answerKey = getAnswerKey(activerow)
     //console.log(answerKey)
-    if (answerKey.includes("tbd")){
+    if (answerKey.every(v => v=="correct")){
+        AnswerFound(activerow)
+        return
+    }
+    else if (answerKey.includes("tbd")){
         alert("Not all letters have an assigned color")
         alert("Please click on the letters to change color corresponding to whether they are present and in the right position (green), present but in the wrong position (orange), or not present (grey)")
         alert("Colors cycle from grey to orange to green")
     }
     else{
-        if (answerKey.every(v => v=="correct")){
-            AnswerFound(activerow)
-            return
-        }
+        
         let guessKey = generateGuessKey(guessList[guessList.length - 1],answerKey)
         //console.log(guessKey)
         possible = GetPossibleAnswer(guessKey[0],possible)
