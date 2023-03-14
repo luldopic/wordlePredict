@@ -2530,7 +2530,7 @@ function pushGuess(){
         alert("Colors cycle from grey to orange to green")
     }
     else{
-        if (answerKey.every(has("correct"))){
+        if (answerKey.every(includes("correct"))){
             AnswerFound(activerow)
             return
         }
