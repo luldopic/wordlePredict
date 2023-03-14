@@ -2480,6 +2480,7 @@ let possibleSorted = structuredClone(sortedwordbank)
 var activerow = "row-1"
 var guessList = []
 var possibleStack = [structuredClone(possible)]
+var sortedStack = [possibleSorted]
 function runOnStart(){
     //Get opening list
     //sortedAnswers = getSortedPossible(possible,activerow,updateAnswerList,updatecurrentguess)
@@ -2490,15 +2491,6 @@ function runOnStart(){
 }
 runOnStart(guessList)
 
-function getAnswerKey(rowid){
-    let rowchildren = document.getElementById(rowid).children
-    let answerKey = []
-    for (let i=0; i< rowchildren.length; i++){
-        answerKey.push(rowchildren[i].getAttribute("data-state"))
-    }
-    return answerKey
-}
-
 function AnswerFound(rowid){
     let nextbutton = document.getElementById("next")
     nextbutton.disabled = true
@@ -2506,13 +2498,18 @@ function AnswerFound(rowid){
     for (let i = 0; i < currentrow.length; i++){
         currentrow[i].setAttribute("data-state","correct")
     }
-    alert("You have found the word you are looking for")
+    setTimeout(alert("You have found the word you are looking for"),1000)
+    
 }
 
 function popGuess(){
     guessList.pop()
     possibleStack.pop()
+    sortedStack.pop()
+    
     possible = possibleStack[possibleStack.length - 1]
+
+    updateAnswerList(sortedStack[sortedStack.length - 1])
     let currentrow = document.getElementById(activerow).children
     for (let i = 0; i < currentrow.length; i++){
         currentrow[i].innerHTML = ""
@@ -2545,6 +2542,7 @@ function pushGuess(){
         sortedAnswers = getSortedPossible(possible,activerow,updateAnswerList,updatecurrentguess)
         guessList.push(sortedAnswers[0])
         possibleStack.push(structuredClone(possible))
+        sortedStack.push(structuredClone(sortedAnswers))
         let prevbutton = document.getElementById("previous")
         prevbutton.disabled = false
         if (sortedAnswers.length == 1){AnswerFound(activerow)}
@@ -2552,6 +2550,15 @@ function pushGuess(){
 }
 
 //#region Getting set of remaining possible answers
+function getAnswerKey(rowid){
+    let rowchildren = document.getElementById(rowid).children
+    let answerKey = []
+    for (let i=0; i< rowchildren.length; i++){
+        answerKey.push(rowchildren[i].getAttribute("data-state"))
+    }
+    return answerKey
+}
+
 function generateGuessKey(guess, answerKey){
     let correctKeys = new Set()
     let wrongKeys = new Set()
@@ -2569,6 +2576,10 @@ function generateGuessKey(guess, answerKey){
             wrongKeys.add(guess[i])
             wrongKeys.add([guess[i],i].toString())
         }
+    }
+    //console.log(correctKeys)
+    for (key of correctKeys){
+        wrongKeys.delete(key[0])
     }
     return [correctKeys, wrongKeys]
 }
