@@ -2508,9 +2508,9 @@ function pushGuess(){
         row = row.nextElementSibling
         activerow = row.id
         let guessKey = generateGuessKey(guessList[guessList.length - 1],answerKey)
-        console.log(guessKey)
+        //console.log(guessKey)
         possible = GetPossibleAnswer(guessKey[0],possible)
-        console.log(possible)
+        //console.log(possible)
     }
 }
 
@@ -2544,10 +2544,11 @@ function GetPossibleAnswer(correctKey, possible){
         }
     }
     let possibleAnswer = new Set(listKey)
-    console.log(possible)
+    //console.log(possible)
     console.log(possibleAnswer)
-    possibleAnswer = new Set([possibleAnswer])
-    console.log(possibleAnswer)
+    let allPossible = new Set()
+    possibleAnswer.forEach(union,allPossible)
+    console.log(allPossible)
     possible = intersection(possible,possibleAnswer)
     console.log(possible)
     return possible
