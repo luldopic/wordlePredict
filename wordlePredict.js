@@ -2444,12 +2444,14 @@ function getSortedPossible(possible, activerow, DisplayList, DisplayGuess){
         answerscores.push([word,score])
     }
     let sortedAnswers = answerscores.sort(sortAnswersByScore).reverse().map(function(value, index) { return value[0]})
+    //console.log(sortedAnswers)
     let topguess = sortedAnswers[0]
     //console.log(sortedAnswers)
+    //console.log(possible)
+    sortedAnswers = sortedAnswers.filter(word => Array.from(possible).includes(word))
     DisplayList(sortedAnswers)
     DisplayGuess(activerow, topguess)
-    return sortedAnswers
-    
+    return sortedAnswers    
 }
 
 function updateAnswerList(answerlist){
@@ -2473,8 +2475,8 @@ function updatecurrentguess(rowid, topguess){
     }
 }
 
-possible = structuredClone(wordbank)
-possibleSorted = structuredClone(sortedwordbank)
+let possible = structuredClone(wordbank)
+let possibleSorted = structuredClone(sortedwordbank)
 var activerow = "row-1"
 var guessList = []
 function runOnStart(){
@@ -2496,23 +2498,38 @@ function getAnswerKey(rowid){
     return answerKey
 }
 
+function AnswerFound(rowid){
+    let nextbutton = document.getElementById("next")
+    nextbutton.disabled = true
+    let currentrow = document.getElementById(rowid).children
+    for (let i = 0; i < currentrow.length; i++){
+        currentrow[i].setAttribute("data-state","correct")
+    }
+    alert("You have found the word you are looking for")
+}
 function pushGuess(){
     let answerKey = getAnswerKey(activerow)
+    //console.log(answerKey)
     if (answerKey.includes("tbd")){
         alert("Not all letters have an assigned color")
         alert("Please click on the letters to change color corresponding to whether they are present and in the right position (green), present but in the wrong position (orange), or not present (grey)")
         alert("Colors cycle from grey to orange to green")
     }
     else{
+        let guessKey = generateGuessKey(guessList[guessList.length - 1],answerKey)
+        //console.log(guessKey)
+        possible = GetPossibleAnswer(guessKey[0],possible)
+        //console.log(possible)
+        possible = removeInvalidAnswers(guessKey[1],possible)
+        //console.log(possible)
         let row = document.getElementById(activerow)
         row = row.nextElementSibling
         activerow = row.id
-        let guessKey = generateGuessKey(guessList[guessList.length - 1],answerKey)
-        console.log(guessKey)
-        possible = GetPossibleAnswer(guessKey[0],possible)
-        console.log(possible)
-        possible = removeInvalidAnswers(guessKey[1],possible)
-        console.log(possible)
+        sortedAnswers = getSortedPossible(possible,activerow,updateAnswerList,updatecurrentguess)
+        guessList.push(sortedAnswers[0])
+        let prevbutton = document.getElementById("previous")
+        prevbutton.disabled = false
+        if (sortedAnswers.length == 1){AnswerFound(activerow)}
     }
 }
 
@@ -2539,19 +2556,22 @@ function generateGuessKey(guess, answerKey){
 }
 function GetPossibleAnswer(correctKey, possible){
     let GuessDict = Object.assign({},letterdict,letterposition)
-    var listKey = []
+    var possibleAnswer = []
     for (key in GuessDict){
         if (correctKey.has(key)) {
-            listKey.push(GuessDict[key])
+            //console.log(correctKey.has(key))
+            //console.log(key)
+            possibleAnswer.push(GuessDict[key])
         }
     }
-    if (listKey.length == 0){
+    if (possibleAnswer.length == 0){
         return possible
     }
-    let possibleAnswer = Array.from(new Set(listKey))
+    //console.log(possibleAnswer)
     try{
         let allPossible = possibleAnswer[0]
         for (set of possibleAnswer){allPossible = intersection(set,allPossible)}
+        //console.log(allPossible)
         return intersection(possible,allPossible)
     }
     catch(err){
