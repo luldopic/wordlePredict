@@ -2508,16 +2508,19 @@ function pushGuess(){
         row = row.nextElementSibling
         activerow = row.id
         let guessKey = generateGuessKey(guessList[guessList.length - 1],answerKey)
-        //console.log(guessKey)
+        console.log(guessKey)
         possible = GetPossibleAnswer(guessKey[0],possible)
-        //console.log(possible)
+        console.log(possible)
+        possible = removeInvalidAnswers(guessKey[1],possible)
+        console.log(possible)
     }
 }
 
+//#region Getting set of remaining possible answers
 function generateGuessKey(guess, answerKey){
     let correctKeys = new Set()
     let wrongKeys = new Set()
-    console.log(answerKey)
+    //console.log(answerKey)
     for (const i of Array(5).keys()){
         if (answerKey[i] == "correct"){
             correctKeys.add(guess[i])
@@ -2534,7 +2537,6 @@ function generateGuessKey(guess, answerKey){
     }
     return [correctKeys, wrongKeys]
 }
-
 function GetPossibleAnswer(correctKey, possible){
     let GuessDict = Object.assign({},letterdict,letterposition)
     var listKey = []
@@ -2543,18 +2545,40 @@ function GetPossibleAnswer(correctKey, possible){
             listKey.push(GuessDict[key])
         }
     }
-    let possibleAnswer = new Set(listKey)
-    //console.log(possible)
-    console.log(possibleAnswer)
-    let allPossible = new Set()
-    possibleAnswer.forEach(union,allPossible)
-    console.log(allPossible)
-    possible = intersection(possible,possibleAnswer)
-    console.log(possible)
-    return possible
+    if (listKey.length == 0){
+        return possible
+    }
+    let possibleAnswer = Array.from(new Set(listKey))
+    try{
+        let allPossible = possibleAnswer[0]
+        for (set of possibleAnswer){allPossible = intersection(set,allPossible)}
+        return intersection(possible,allPossible)
+    }
+    catch(err){
+        console.log(err)
+        
+    }
+    
 }
-
-function updatepossible(guess,answerKey,possible){
-    [correctKeys,wrongKeys] = generateGuessKey(guess,answerKey)
-
+function removeInvalidAnswers(wrongKey,possible){
+    let GuessDict = Object.assign({},letterdict,letterposition)
+    var listKey = []
+    for (key in GuessDict){
+        if (wrongKey.has(key)){
+            listKey.push(GuessDict[key])
+        }
+    }
+    let invalidAnswer = Array.from(new Set(listKey))
+    try{
+        let allInvalid = invalidAnswer[0]
+        for (set of invalidAnswer){allInvalid = union(set,allInvalid)}
+        //console.log(allInvalid)
+        return new Set(Array.from(possible).filter(x => !allInvalid.has(x)))
+    }
+    catch(err){
+        console.log(err)
+    }
+    
+    
 }
+//#endregion
