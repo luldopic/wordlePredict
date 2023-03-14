@@ -37,11 +37,11 @@
                     <div class="board-container">
                         <div class="board-module">
                             <div class="row-module" id="row-1">
-                                <button type = "button" class="tile-module" id="row-1-tile-1" data-state="present" onclick ="changeDataState(this);">s</button>
-                                <button class="tile-module" id="row-1-tile-2" data-state="absent" onclick ="changeDataState(this);">l</button>
-                                <button class="tile-module" id="row-1-tile-3" data-state="tbd" onclick ="changeDataState(this);">a</button>
-                                <button class="tile-module" id="row-1-tile-4" data-state="correct" onclick ="changeDataState(this);">t</button>
-                                <button class="tile-module" id="row-1-tile-5" data-state="correct" onclick ="changeDataState(this);">e</button>
+                                <button class="tile-module" id="row-1-tile-1" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-1-tile-2" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-1-tile-3" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-1-tile-4" data-state="empty" onclick ="changeDataState(this);"></button>
+                                <button class="tile-module" id="row-1-tile-5" data-state="empty" onclick ="changeDataState(this);"></button>
                             </div>
                             <div class="row-module" id="row-2">
                                 <button class="tile-module" id="row-2-tile-1" data-state="empty" onclick ="changeDataState(this);"></button>
@@ -81,10 +81,10 @@
                         </div>
                         <div class = "button-bar">
                             <div>
-                                <button class="nextprev">previous</button>
+                                <button class="nextprev" id="previous" onclick = "popGuess()">previous</button>
                             </div>
                             <div>
-                                <button class="nextprev">next</button>
+                                <button class="nextprev" id="next" onclick="pushGuess()">next</button>
                             </div>
                         </div>
                     </div>
